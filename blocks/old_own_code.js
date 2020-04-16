@@ -8,8 +8,8 @@ if ( Blockly.ownBlocks == null ) {
   BOB_.Operator = {};
   BOB_.OP = BOB_.Operator;
   BOB_.local = /^file.*/.test(window.location.protocol);
-  BOB_.mainPath = BOB_.local ? '//RASPBERRYPI/ioBroker-Adapter/javascript.admin/google-blockly/custom/blocks/comp/.'
-                             : 'google-blockly/custom/blocks/comp/.';
+  BOB_.mainPath = BOB_.local ? '//RASPBERRYPI/ioBroker-Adapter/javascript.admin/google-blockly/custom/blocks/old/'
+                             : 'google-blockly/custom/blocks/old/';
   !Blockly.utils.xml && ( Blockly.utils.xml = Blockly.Xml.utils );
 }
 
