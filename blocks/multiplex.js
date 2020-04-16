@@ -447,7 +447,7 @@ Blockly.Blocks['math_set_operators'] = {
   init: function() {
     //Validator for input-change
     let setInput = function(operator) {
-      var input = this.getSourceBlock().getInput('value');
+      var input = this.sourceBlock_.getInput('value');
       let check = Blockly.Constants.Operators[operator] ?
                   Blockly.Constants.Operators[operator].validator : null;
       input.setCheck(check);
