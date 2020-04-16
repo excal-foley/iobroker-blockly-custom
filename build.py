@@ -18,15 +18,11 @@ relative_js_path = os.path.relpath(this_path, html_dir)
 
 # get all js-files and adds them as html-code to insert_code
 insert_code = ''
-for file in glob.glob('*.js'): #'**/*.js', recursive=True
-    insert_code += html_js_code.replace('%%%%', os.path.join(relative_js_path, file))
-    print(file)
-for file in glob.glob('blocks/*.js'):
-    insert_code += html_js_code.replace('%%%%', os.path.join(relative_js_path, file))
-    print(file)
-for file in glob.glob('blocks/msg/*.js'):
-    insert_code += html_js_code.replace('%%%%', os.path.join(relative_js_path, file))
-    print(file)
+js_paths = ['*.js', 'blocks/*.js', 'blocks/msg/*.js']
+for js_path in js_paths:
+    for file in glob.glob(js_path): #'**/*.js', recursive=True
+        insert_code += html_js_code.replace('%%%%', os.path.join(relative_js_path, file))
+        print(file)
 
 # create ".bak2" backup-file, if ".bak" already exist
 if os.path.isfile(html_path+'.bak'):
@@ -37,10 +33,8 @@ else:
 # defined regex to replace html
 code_marker_start = '<!--start custom blocks-->'
 code_marker_end = '<!--end custom blocks-->'
-#search_regex = '(?:(<\/script>)[\\n\\s]*(<style>))|(?:{}(.|\\n)*{})'.format(code_marker_start, code_marker_end)
-search_regex = '(?:(<\/script>)(<style>))|(?:' + code_marker_start + '.*' + code_marker_end + ')'
+search_regex = '(?:(<\/script>)\\s*(<style>))|(?:{}.*{})'.format(code_marker_start, code_marker_end)
 replace_regex = r'\1{}{}{}\2'.format(code_marker_start, insert_code, code_marker_end)
-#replace_regex = r'\1' + code_marker_start + insert_code + code_marker_end + r'\2'
 
 # replace tab.html-file
 with fileinput.FileInput(html_path, inplace=True, backup=bak) as file:
