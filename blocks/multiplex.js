@@ -568,7 +568,7 @@ Blockly.Multiplex.codeGenerator  = function(block, arg = []) {
     }
     if (links.length > 1) console.error('In Block "' + block.type + '" can\'t generate Javacode!');
     links = links[0].replace('\\${', '${');
-    return withOrder ? [links, this.maxOrder] : links
+    return withOrder ? [links, this.maxOrder] : (links + ';\n')
   };
 }
 /**/
