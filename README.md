@@ -4,20 +4,20 @@ Add custom blocks to ioBroker-Blockly
 ### Extract of blocks to be added
 
 **Multiple arithmetic- and logic-blocks**
-<br/><img src="examples/multiplex_arith.png" alt="" width="200"/>
-<br/><img src="examples/multiplex_logic.png" alt="" width="200"/>
+<br/><img src="examples/multiplex_arith.png" alt="" width="400"/>
+<br/><img src="examples/multiplex_logic.png" alt="" width="400"/>
 
 **Telegram keybord generator**
-<br/><img src="examples/telegram_keyboard.png" alt="" width="200"/>
-<br/><img src="examples/telegram_keyboard2.png" alt="" width="200"/>
+<br/><img src="examples/telegram_keyboard.png" alt="" width="400"/>
+<br/><img src="examples/telegram_keyboard2.png" alt="" width="400"/>
 
 **gets the index of list-loop**
 
 **is value between this and that**
-<br/><img src="examples/logic_between.png" alt="" width="200"/>
+<br/><img src="examples/logic_between.png" alt="" width="400"/>
 
 **if empty then**
-<br/><img src="examples/logic_ifEmpty.png" alt="" width="200"/>
+<br/><img src="examples/logic_ifEmpty.png" alt="" width="400"/>
 
 **Multiple property/function-block**
 
