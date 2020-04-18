@@ -196,7 +196,7 @@ BOB_.ioBrokerLoad = function() {
 
 /**//***************************    Eigene Blöcke einbinden    ***************************///
 //BOB_.local && BOB_.importScripts('//RASPBERRYPI/ioBroker-Adapter/javascript.admin/google-blockly/own/blocks_words.js');
-BOB_.importScripts('blocks/msg/de_ioBroker_change.js', BOB_.mainPath);
+//BOB_.importScripts('blocks/msg/de_ioBroker_change.js', BOB_.mainPath);
 
 BOB_.importScripts([
   'blocks/msg/' + 'de' + '.js', //TO-DO
