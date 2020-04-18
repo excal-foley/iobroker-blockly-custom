@@ -1,4 +1,5 @@
 'use strict';
+() => {
 
 Blockly.Msg["LISTS_CREATE_WITH_INPUT_WITH"] = "Liste";
 Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"] = "Funktion";
@@ -68,3 +69,5 @@ Blockly.Words['convert_to_date'].de = 'zu Datum/Zeit';
 Blockly.Words['convert_to'].de = 'zu';
 Blockly.Words['convert_json2object'].de = 'JSON zu Objekt';
 Blockly.Words['convert_object2json'].de = 'Objekt zu JSON';
+
+}
