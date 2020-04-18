@@ -7,8 +7,8 @@ goog.require('Blockly.JavaScript');
 // --- logic_between --------------------------------------------------
 Blockly.Test.blocks['logic_between'] =
     '  <block type="logic_between">'
-    +'    <field name="operator0">LT</field>'
-    +'    <field name="operator1">LT</field>'
+    +'    <field name="operator0">LE</field>'
+    +'    <field name="operator1">LE</field>'
     +'    <value name="value0">'
     +'      <block type="math_number">'
     +'        <field name="NUM">0</field>'
