@@ -8,37 +8,35 @@ goog.require('Blockly');
 
 Blockly.Multiplex = {};
 
-var systemLang = 'de';//TO-DO Fehler
-
 // --- define operators --------------------------------------------------
-Blockly.Words['multiplex_operators_ADD']       = {'en': '+',          'de': '+'        };
-Blockly.Words['multiplex_operators_SUBTR']     = {'en': '\u2212',     'de': '\u2212'   };
-Blockly.Words['multiplex_operators_MULTI']     = {'en': '×',          'de': '×'        };
-Blockly.Words['multiplex_operators_DIVI']      = {'en': '÷',          'de': '÷'        };
-Blockly.Words['multiplex_operators_MOD']       = {'en': 'modulo',     'de': 'Rest'     };
-Blockly.Words['multiplex_operators_POW']       = {'en': '^',          'de': '^'        };
-Blockly.Words['multiplex_operators_ROOT']      = {'en': '√',          'de': '√'        };
-Blockly.Words['multiplex_operators_LT']        = {'en': '<',          'de': '<'        };
-Blockly.Words['multiplex_operators_LE']        = {'en': '≤',          'de': '≤'        };
-Blockly.Words['multiplex_operators_GT']        = {'en': '>',          'de': '>'        };
-Blockly.Words['multiplex_operators_GE']        = {'en': '≥',          'de': '≥'        };
-Blockly.Words['multiplex_operators_EQUAL']     = {'en': '=',          'de': '='        };
-Blockly.Words['multiplex_operators_NOTEQUAL']  = {'en': '≠',          'de': '≠'        };
-Blockly.Words['multiplex_operators_STRICT']    = {'en': '≡',          'de': '≡'        };
-Blockly.Words['multiplex_operators_NOTSTRICT'] = {'en': '≡\u0338',    'de': '≡\u0338'  };
-Blockly.Words['multiplex_operators_AND']       = {'en': 'and',        'de': 'und'      };
-Blockly.Words['multiplex_operators_OR']        = {'en': 'or',         'de': 'oder'     };
-Blockly.Words['multiplex_operators_SET']       = {'en': '=',          'de': '='        };
-Blockly.Words['multiplex_operators_SET_ADD']   = {'en': '+=',         'de': '+='       };
-Blockly.Words['multiplex_operators_SET_SUBTR'] = {'en': '\u2212=',    'de': '\u2212='  };
-Blockly.Words['multiplex_operators_SET_POW']   = {'en': '^=',         'de': '^='       };
-Blockly.Words['multiplex_operators_SET_MULTI'] = {'en': '×=',         'de': '×='       };
-Blockly.Words['multiplex_operators_SET_DIVI']  = {'en': '÷=',         'de': '÷='       };
-Blockly.Words['multiplex_operators_SET_MOD']   = {'en': '%=',         'de': '%='       };
-Blockly.Words['multiplex_operators_SET_DEFLT'] = {'en': 'falls leer', 'de': 'if empty' };
-Blockly.Words['multiplex_operators_DOT']       = {'en': '.',          'de': '.'        };
-Blockly.Words['multiplex_operators_SQUARE']    = {'en': '[ ]',        'de': '[ ]'      };
-Blockly.Words['multiplex_operators_ROUND']     = {'en': '( )',        'de': '( )'      };
+Blockly.Words['multiplex_operators_DOT']       = {'en': 'Fixed Property',      'de': 'Feste Eigenschaft'    };
+Blockly.Words['multiplex_operators_SQUARE']    = {'en': 'Variable Property',   'de': 'Variable Eigenschaft' };
+Blockly.Words['multiplex_operators_ROUND']     = {'en': 'Function Invocation', 'de': 'Funktionsaufruf'      };
+Blockly.Words['multiplex_operators_NEGATIV']   = {'en': 'Negativ',             'de': 'Negativ'              };
+Blockly.Words['multiplex_operators_NOT']       = {'en': 'Not',                 'de': 'Nicht'                };
+Blockly.Words['multiplex_operators_ADD']       = {'en': 'Add',                 'de': 'Plus'                 };
+Blockly.Words['multiplex_operators_SUBTR']     = {'en': 'Subtract',            'de': 'Minus'                };
+Blockly.Words['multiplex_operators_MULTI']     = {'en': 'Multiply',            'de': 'Mal'                  };
+Blockly.Words['multiplex_operators_DIVI']      = {'en': 'Divide',              'de': 'Geteilt'              };
+Blockly.Words['multiplex_operators_MOD']       = {'en': 'Modulo',              'de': 'Rest'                 };
+Blockly.Words['multiplex_operators_POW']       = {'en': 'Power',               'de': 'Potenz'               };
+Blockly.Words['multiplex_operators_ROOT']      = {'en': 'ˣRoot',               'de': 'ˣWurzel'              };
+Blockly.Words['multiplex_operators_LT']        = {'en': 'lower then',          'de': 'kleiner als'          };
+Blockly.Words['multiplex_operators_LE']        = {'en': 'lower equal',         'de': 'kleiner gleich'       };
+Blockly.Words['multiplex_operators_GT']        = {'en': 'greater then',        'de': 'größer als'           };
+Blockly.Words['multiplex_operators_GE']        = {'en': 'greater equal',       'de': 'größer gleich'        };
+Blockly.Words['multiplex_operators_EQUAL']     = {'en': 'equal',               'de': 'gleich'               };
+Blockly.Words['multiplex_operators_NOTEQUAL']  = {'en': 'not equal',           'de': 'nicht gleich'         };
+Blockly.Words['multiplex_operators_AND']       = {'en': 'and',                 'de': 'und'                  };
+Blockly.Words['multiplex_operators_OR']        = {'en': 'or',                  'de': 'oder'                 };
+Blockly.Words['multiplex_operators_SET']       = {'en': 'set',                 'de': 'setzen'               };
+Blockly.Words['multiplex_operators_SET_ADD']   = {'en': 'set Add',             'de': 'setzen Plus'          };
+Blockly.Words['multiplex_operators_SET_SUBTR'] = {'en': 'set Subtract',        'de': 'setzen Minus'         };
+Blockly.Words['multiplex_operators_SET_MULTI'] = {'en': 'set Multiply',        'de': 'setzen Mal'           };
+Blockly.Words['multiplex_operators_SET_DIVI']  = {'en': 'set Divide',          'de': 'setzen Geteilt'       };
+Blockly.Words['multiplex_operators_SET_MOD']   = {'en': 'set Modulo',          'de': 'setzen Rest'          };
+Blockly.Words['multiplex_operators_SET_POW']   = {'en': 'set Power',           'de': 'setzen Potenz'        };
+Blockly.Words['multiplex_operators_SET_DEFLT'] = {'en': 'set if empty',        'de': 'setzen falls leer'    };
 
 
 Blockly.Constants.Operators = {
@@ -57,52 +55,54 @@ Blockly.Constants.Operators = {
   add: function(id, sign, type, code, order, validator) {
     this[id] = {
       id: id,
-      name: Blockly.Words['multiplex_operators_'+id],
-      sign: sign,
+      //name: this.word //Blockly.Words['multiplex_operators_'+id],
+      _sign: sign,
       type: type,
       code: code,
       order: order,
       validator: validator,
-      get dropdown() { return [this.name[systemLang], this.id] }
+      get dropdown() { return [this.sign, this.id] },
+      get word() { return Blockly.Words['multiplex_operators_'+this.id][systemLang] },
+      get sign() { return this._sign || this.word }
     }
   }
 }
 
-//Blockly.Constants.Operators.add( 'id',        'sign',    'type',  'code',          order,                                   Validator                       ),
+//                             ( 'id',        'sign',    'type',  'code',                order,                                   Validator                       ),
+Blockly.Constants.Operators.add( 'DOT',       '.',       '',      '${5}.${6}',           Blockly.JavaScript.ORDER_MEMBER,         /[\W]*/                         ),
+Blockly.Constants.Operators.add( 'SQUARE',    '[ ]',     '',      '${5}[${4}]',          Blockly.JavaScript.ORDER_MEMBER,         ['String', 'Number', 'Boolean'] ),
+Blockly.Constants.Operators.add( 'ROUND',     '( )',     '',      '${5}(${4})',          Blockly.JavaScript.ORDER_FUNCTION_CALL,  ''                              ),
 Blockly.Constants.Operators.add( 'NEGATIV',   '\u2212',  '',      '-${2}',               Blockly.JavaScript.ORDER_UNARY_NEGATION, ''                              ),
 Blockly.Constants.Operators.add( 'NOT',       '\u2757',  '',      '!${2}',               Blockly.JavaScript.ORDER_LOGICAL_NOT,    ''                              ),
-Blockly.Constants.Operators.add( 'ADD',       '+',       'arith', '${5} + ${6}',         Blockly.JavaScript.ORDER_ADDITION,       ['Number', 'Boolean', 'String']           ),
+Blockly.Constants.Operators.add( 'ADD',       '+',       'arith', '${5} + ${6}',         Blockly.JavaScript.ORDER_ADDITION,       ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'SUBTR',     '\u2212',  'arith', '${5} - ${6}',         Blockly.JavaScript.ORDER_SUBTRACTION,    ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'MULTI',     '×',       'arith', '${5} * ${6}',         Blockly.JavaScript.ORDER_MULTIPLICATION, ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'DIVI',      '÷',       'arith', '${5} / ${6}',         Blockly.JavaScript.ORDER_DIVISION,       ['Number', 'Boolean']           ),
-Blockly.Constants.Operators.add( 'MOD',       '%',       'arith', '${5} % ${6}',         Blockly.JavaScript.ORDER_MODULUS,        ['Number', 'Boolean']           ),
+Blockly.Constants.Operators.add( 'MOD',       'mod',     'arith', '${5} % ${6}',         Blockly.JavaScript.ORDER_MODULUS,        ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'POW',       '^',       'arith', '${5}**${6}',          Blockly.JavaScript.ORDER_EXPONENTIATION, ['Number', 'Boolean']           ),
-Blockly.Constants.Operators.add( 'ROOT',      '√',       'arith', '(${6})**(1/${3})',    Blockly.JavaScript.ORDER_EXPONENTIATION, ['Number', 'Boolean']           ),
+Blockly.Constants.Operators.add( 'ROOT',      'ˣ√',      'arith', '(${6})**(1/${3})',    Blockly.JavaScript.ORDER_EXPONENTIATION, ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'LT',        '<',       'comp',  '${5} < ${6}',         Blockly.JavaScript.ORDER_RELATIONAL,     ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'LE',        '≤',       'comp',  '${5} <= ${6}',        Blockly.JavaScript.ORDER_RELATIONAL,     ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'GT',        '>',       'comp',  '${5} > ${6}',         Blockly.JavaScript.ORDER_RELATIONAL,     ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'GE',        '≥',       'comp',  '${5} >= ${6}',        Blockly.JavaScript.ORDER_RELATIONAL,     ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'EQUAL',     '=',       'comp',  '${5} == ${6}',        Blockly.JavaScript.ORDER_EQUALITY,       ''                              ),
 Blockly.Constants.Operators.add( 'NOTEQUAL',  '≠',       'comp',  '${5} != ${6}',        Blockly.JavaScript.ORDER_EQUALITY,       ''                              ),
-Blockly.Constants.Operators.add( 'STRICT',    '≡',       'comp',  '${5} === ${6}',       Blockly.JavaScript.ORDER_EQUALITY,       ''                              ),
-Blockly.Constants.Operators.add( 'NOTSTRICT', '≡\u0338', 'comp',  '${5} !== ${6}',       Blockly.JavaScript.ORDER_EQUALITY,       ''                              ),
 Blockly.Constants.Operators.add( 'AND',       '&&',      'logic', '${5} && ${6}',        Blockly.JavaScript.ORDER_LOGICAL_AND,    ''                              ),
 Blockly.Constants.Operators.add( 'OR',        '||',      'logic', '${5} || ${6}',        Blockly.JavaScript.ORDER_LOGICAL_OR,     ''                              ),
 Blockly.Constants.Operators.add( 'SET',       '=',       'assig', '${5} = ${6}',         Blockly.JavaScript.ORDER_ASSIGNMENT,     null                            ),
 Blockly.Constants.Operators.add( 'SET_ADD',   '+=',      'assig', '${5} += ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number', 'Boolean', 'String'] ),
 Blockly.Constants.Operators.add( 'SET_SUBTR', '\u2212=', 'assig', '${5} -= ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number', 'Boolean']           ),
-Blockly.Constants.Operators.add( 'SET_POW',   '^=',      'assig', '${5} **= ${6}',       Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
 Blockly.Constants.Operators.add( 'SET_MULTI', '×=',      'assig', '${5} *= ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number', 'Boolean']           ),
 Blockly.Constants.Operators.add( 'SET_DIVI',  '÷=',      'assig', '${5} /= ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
-Blockly.Constants.Operators.add( 'SET_MOD',   '%=',      'assig', '${5} %= ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
-Blockly.Constants.Operators.add( 'SET_DEFLT', '||=',     'assig', '${5} = ${5} || ${6}', Blockly.JavaScript.ORDER_LOGICAL_OR,     null                            ),
+Blockly.Constants.Operators.add( 'SET_MOD',   'mod=',    'assig', '${5} %= ${6}',        Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
+Blockly.Constants.Operators.add( 'SET_POW',   '^=',      'assig', '${5} **= ${6}',       Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
+Blockly.Constants.Operators.add( 'SET_DEFLT', null,      'assig', '${5} = ${5} || ${6}', Blockly.JavaScript.ORDER_LOGICAL_OR,     null                            ),
 
 Blockly.Constants.Operators.add( 'DOT',       '.',       '',      '${5}.${6}',           Blockly.JavaScript.ORDER_MEMBER,         /[\W]*/                         ),
 Blockly.Constants.Operators.add( 'SQUARE',    '[ ]',     '',      '${5}[${4}]',          Blockly.JavaScript.ORDER_MEMBER,         ['String', 'Number', 'Boolean'] ),
 Blockly.Constants.Operators.add( 'ROUND',     '( )',     '',      '${5}(${4})',          Blockly.JavaScript.ORDER_FUNCTION_CALL,  ''                              ),
 
-
-
+// sets the default-value from an empty input to this check-value [check-type, default-value]
 Blockly.Constants.checkInputDeflt = [ [null, '0'], ['Number', '0'], ['Boolean', 'false'], ['String', "''"], ['Array', '[]'], ['Colour', '#000000'] ];
 
 Blockly.Multiplex.BLOCK = function(container, items) {
@@ -110,12 +110,12 @@ Blockly.Multiplex.BLOCK = function(container, items) {
     init: function() {
       let input = this.appendValueInput('FIX_INPUT0')
                       .setAlign(Blockly.ALIGN_RIGHT)
-                      .setCheck('String', 'Number', 'Boolean');
+                      .setCheck(['String', 'Number', 'Boolean']);
 
       input.codeMap = [ ['INPUT', 'FIX_INPUT0'] ];
 
       this.setInputsInline(true);
-      this.setOutput(true, 'Boolean');
+      this.setOutput(true, 'Boolean');// TODO: Variabler check
       this.setColour(230);
       this.setTooltip('');
       this.setHelpUrl('');
@@ -267,16 +267,16 @@ Blockly.Multiplex.CONTAINER = function(container) {
 
 /**
  * [description]
- * @param  {string} newValue        [description]
+ * @param  {?string} newValue        [description]
  * @this   {Blockly.FieldDropdown}
  * @return {string}                 newValue without changes
  */
-Blockly.Multiplex.DROPDOWN_VALIDATOR = function(newValue) {
+Blockly.Multiplex.DROPDOWN_VALIDATOR = function(newValue = this.getValue()) {
   let block = this.sourceBlock_;
   if (block) {
-      let input = block.getInput('INPUT0');
+    let input = this.getParentInput();
     let oldValue = this.getValue();
-    if (oldValue != newValue && block.mutator.isVisible())
+    if (oldValue != newValue && block.mutator && block.mutator.isVisible())
           block.mutator.setVisible(false);
     //let input = this.getParentInput();
     let itemNr = input.itemNr;
@@ -294,7 +294,7 @@ Blockly.Multiplex.DROPDOWN_VALIDATOR = function(newValue) {
  * @return {[type]}     [description]
  */
 Blockly.Multiplex.ITEM = function(obj) {
-  this.init = new Blockly.Multiplex.ITEM_BLOCK(obj.block);
+  this.init = new Blockly.Multiplex.ITEM_BLOCK(obj.item);
   this.setElements = new Blockly.Multiplex.ITEM_SETELEMENTS(obj.element);
 }
 
@@ -315,17 +315,20 @@ Blockly.Multiplex.ITEM_BLOCK = function(obj) {
 Blockly.Multiplex.ITEM_SETELEMENTS = function(obj) {
   return function(block, itemNr, setShadow = false) {
     //let n = block.inputList.length - 1;
+    // append ValueInput
     let n = itemNr;
     let input = block.appendValueInput('INPUT' + n)
                      .setAlign(Blockly.ALIGN_RIGHT)
                      .setCheck(obj.setCheck);
 
+    // append Dropdown
     let validator = Blockly.Multiplex.DROPDOWN_VALIDATOR;
     let selector = new Blockly.FieldDropdown(obj.dropdown, validator);
-    if (obj.operator) selector.setValue(obj.operator);
-
     if (n > -1) input.appendField(selector, 'OPERATOR' + n);
+    selector.setValue(obj.operator);
+    selector.callValidator();
 
+    // set codeMap
     input.itemNr = itemNr;
     input.codeMap = (n > -1) ? [ ['FIELD_OPERATOR', 'OPERATOR' + n] ] : [];
     input.codeMap.push(['INPUT', 'INPUT' + n]);
@@ -348,10 +351,10 @@ Blockly.Blocks['multiplex_logic_container'] =
        tooltip: ''
      });
 
-Blockly.Multiplex.Logic_Item = function(title, operator) {
+Blockly.Multiplex.Logic_Item = function(operator) {
   return new Blockly.Multiplex.ITEM({
-    block: {
-      title: title,
+    item: {
+      title: Blockly.Constants.Operators[operator].word,
       PreviousStatement: null,
       NextStatement: null,
       colour: 230,
@@ -366,11 +369,10 @@ Blockly.Multiplex.Logic_Item = function(title, operator) {
   });
 }
 
+Blockly.Blocks['multiplex_AND'] = Blockly.Multiplex.Logic_Item('AND');
+Blockly.Blocks['multiplex_OR'] = Blockly.Multiplex.Logic_Item('OR');
 
-Blockly.Blocks['multiplex_AND'] = Blockly.Multiplex.Logic_Item('UND', 'AND');
-Blockly.Blocks['multiplex_OR'] = Blockly.Multiplex.Logic_Item('ODER', 'OR');
-
-console.log(Blockly.Blocks['multiplex_AND']);
+//console.log(Blockly.Blocks['multiplex_AND']);
 
 Blockly.Blocks['multiplex_logic'] = new Blockly.Multiplex.BLOCK(
                                               'multiplex_logic_container',
@@ -394,10 +396,10 @@ Blockly.Blocks['multiplex_arith_container'] =
        tooltip: ''
      });
 
-Blockly.Multiplex.Arith_Item = function(title, operator) {
+Blockly.Multiplex.Arith_Item = function(operator) {
   return new Blockly.Multiplex.ITEM({
-    block: {
-      title: title,
+    item: {
+      title: Blockly.Constants.Operators[operator].word,
       PreviousStatement: null,
       NextStatement: null,
       colour: 200,
@@ -412,13 +414,13 @@ Blockly.Multiplex.Arith_Item = function(title, operator) {
   });
 }
 
-Blockly.Blocks['multiplex_ADD'] = Blockly.Multiplex.Arith_Item('PLUS', 'ADD');
-Blockly.Blocks['multiplex_SUBTR'] = Blockly.Multiplex.Arith_Item('MINUS', 'SUBTR');
-Blockly.Blocks['multiplex_MULTI'] = Blockly.Multiplex.Arith_Item('MAL', 'MULTI');
-Blockly.Blocks['multiplex_DIVI'] = Blockly.Multiplex.Arith_Item('GETEILT', 'DIVI');
-Blockly.Blocks['multiplex_MOD'] = Blockly.Multiplex.Arith_Item('REST', 'MOD');
-Blockly.Blocks['multiplex_POW'] = Blockly.Multiplex.Arith_Item('HOCH', 'POW');
-Blockly.Blocks['multiplex_ROOT'] = Blockly.Multiplex.Arith_Item('WURZEL', 'ROOT');
+Blockly.Blocks['multiplex_ADD'] = Blockly.Multiplex.Arith_Item('ADD');
+Blockly.Blocks['multiplex_SUBTR'] = Blockly.Multiplex.Arith_Item('SUBTR');
+Blockly.Blocks['multiplex_MULTI'] = Blockly.Multiplex.Arith_Item('MULTI');
+Blockly.Blocks['multiplex_DIVI'] = Blockly.Multiplex.Arith_Item('DIVI');
+Blockly.Blocks['multiplex_MOD'] = Blockly.Multiplex.Arith_Item('MOD');
+Blockly.Blocks['multiplex_POW'] = Blockly.Multiplex.Arith_Item('POW');
+Blockly.Blocks['multiplex_ROOT'] = Blockly.Multiplex.Arith_Item('ROOT');
 
 Blockly.Blocks['multiplex_arith'] = new Blockly.Multiplex.BLOCK(
                                               'multiplex_arith_container',
@@ -571,8 +573,6 @@ Blockly.Multiplex.codeGenerator  = function(block, arg = []) {
     return withOrder ? [links, this.maxOrder] : (links + ';\n')
   };
 }
-/**/
-
 
 // --- multiplex_property --------------------------------------------------
 Blockly.Blocks['multiplex_property_container'] =
@@ -583,10 +583,10 @@ Blockly.Blocks['multiplex_property_container'] =
        tooltip: ''
      });
 
-Blockly.Multiplex.Property_Item = function(title, operator) {
+Blockly.Multiplex.Property_Item = function(operator) {
   return new Blockly.Multiplex.ITEM({
-    block: {
-      title: title,
+    item: {
+      title: Blockly.Constants.Operators[operator].word,
       PreviousStatement: null,
       NextStatement: null,
       colour: 130,
@@ -601,9 +601,9 @@ Blockly.Multiplex.Property_Item = function(title, operator) {
   });
 }
 
-Blockly.Blocks['multiplex_DOT'] = Blockly.Multiplex.Property_Item('.ABCDEF.', 'DOT');
-Blockly.Blocks['multiplex_SQUARE'] = Blockly.Multiplex.Property_Item('[.....]', 'SQUARE');
-Blockly.Blocks['multiplex_ROUND'] = Blockly.Multiplex.Property_Item('(.....)', 'ROUND');
+Blockly.Blocks['multiplex_DOT'] = Blockly.Multiplex.Property_Item('DOT');
+Blockly.Blocks['multiplex_SQUARE'] = Blockly.Multiplex.Property_Item('SQUARE');
+Blockly.Blocks['multiplex_ROUND'] = Blockly.Multiplex.Property_Item('ROUND');
 
 Blockly.Blocks['multiplex_property'] = new Blockly.Multiplex.BLOCK(
                                               'multiplex_property_container',
