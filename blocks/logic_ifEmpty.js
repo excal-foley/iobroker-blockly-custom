@@ -34,6 +34,12 @@ Blockly.Blocks['logic_ifEmpty'] = {
   }
 }
 
+Blockly.JavaScript['logic_ifEmpty'] = function(block) {
+  let value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_LOGICAL_OR) || null;
+  let deflt = Blockly.JavaScript.valueToCode(block, 'DEFLT', Blockly.JavaScript.ORDER_LOGICAL_OR) || null;
+  return [value + ' || ' + deflt, Blockly.JavaScript.ORDER_LOGICAL_OR];
+}
+
 /**                | out2in | in2out |
  *   in<>in        |    0   |    0   |
  *       in <- out |    1   |    0   |
