@@ -8,36 +8,49 @@ goog.require('Blockly');
 
 Blockly.Multiplex = {};
 
-// --- define operators --------------------------------------------------
-Blockly.Words['multiplex_operators_DOT']       = {'en': 'Fixed Property',      'de': 'Feste Eigenschaft'    };
-Blockly.Words['multiplex_operators_SQUARE']    = {'en': 'Variable Property',   'de': 'Variable Eigenschaft' };
-Blockly.Words['multiplex_operators_ROUND']     = {'en': 'Function Invocation', 'de': 'Funktionsaufruf'      };
-Blockly.Words['multiplex_operators_NEGATIV']   = {'en': 'Negativ',             'de': 'Negativ'              };
-Blockly.Words['multiplex_operators_NOT']       = {'en': 'Not',                 'de': 'Nicht'                };
-Blockly.Words['multiplex_operators_ADD']       = {'en': 'Add',                 'de': 'Plus'                 };
-Blockly.Words['multiplex_operators_SUBTR']     = {'en': 'Subtract',            'de': 'Minus'                };
-Blockly.Words['multiplex_operators_MULTI']     = {'en': 'Multiply',            'de': 'Mal'                  };
-Blockly.Words['multiplex_operators_DIVI']      = {'en': 'Divide',              'de': 'Geteilt'              };
-Blockly.Words['multiplex_operators_MOD']       = {'en': 'Modulo',              'de': 'Rest'                 };
-Blockly.Words['multiplex_operators_POW']       = {'en': 'Power',               'de': 'Potenz'               };
-Blockly.Words['multiplex_operators_ROOT']      = {'en': 'ˣRoot',               'de': 'ˣWurzel'              };
-Blockly.Words['multiplex_operators_LT']        = {'en': 'lower then',          'de': 'kleiner als'          };
-Blockly.Words['multiplex_operators_LE']        = {'en': 'lower equal',         'de': 'kleiner gleich'       };
-Blockly.Words['multiplex_operators_GT']        = {'en': 'greater then',        'de': 'größer als'           };
-Blockly.Words['multiplex_operators_GE']        = {'en': 'greater equal',       'de': 'größer gleich'        };
-Blockly.Words['multiplex_operators_EQUAL']     = {'en': 'equal',               'de': 'gleich'               };
-Blockly.Words['multiplex_operators_NOTEQUAL']  = {'en': 'not equal',           'de': 'nicht gleich'         };
-Blockly.Words['multiplex_operators_AND']       = {'en': 'and',                 'de': 'und'                  };
-Blockly.Words['multiplex_operators_OR']        = {'en': 'or',                  'de': 'oder'                 };
-Blockly.Words['multiplex_operators_SET']       = {'en': 'set',                 'de': 'setzen'               };
-Blockly.Words['multiplex_operators_SET_ADD']   = {'en': 'set Add',             'de': 'setzen Plus'          };
-Blockly.Words['multiplex_operators_SET_SUBTR'] = {'en': 'set Subtract',        'de': 'setzen Minus'         };
-Blockly.Words['multiplex_operators_SET_MULTI'] = {'en': 'set Multiply',        'de': 'setzen Mal'           };
-Blockly.Words['multiplex_operators_SET_DIVI']  = {'en': 'set Divide',          'de': 'setzen Geteilt'       };
-Blockly.Words['multiplex_operators_SET_MOD']   = {'en': 'set Modulo',          'de': 'setzen Rest'          };
-Blockly.Words['multiplex_operators_SET_POW']   = {'en': 'set Power',           'de': 'setzen Potenz'        };
-Blockly.Words['multiplex_operators_SET_DEFLT'] = {'en': 'set if empty',        'de': 'setzen falls leer'    };
+var systemLang = systemLang || 'en';//// TODO: delete this and mak compatible with ioBroker
 
+Blockly.Words['multiplex_logic_container']      = {'en': 'Logic Operators',             'de': 'Logik Operatoren'};
+Blockly.Words['multiplex_arith_container']      = {'en': 'Arithmetic Operators',        'de': 'Mathematische Operatoren'};
+Blockly.Words['multiplex_property_container']   = {'en': 'Property Operators',          'de': 'Eigenschafts Operatoren'};
+//Blockly.Words['multiplex_logic_Tooltip']        = {'en': '',                            'de': ''};
+//Blockly.Words['multiplex_arith_Tooltip']        = {'en': '',                            'de': ''};
+//Blockly.Words['multiplex_property_Tooltip']     = {'en': '',                            'de': ''};
+//Blockly.Words['multiplex_logic_HelpUrl']        = {'en': '',                            'de': ''};
+//Blockly.Words['multiplex_arith_HelpUrl']        = {'en': '',                            'de': ''};
+//Blockly.Words['multiplex_property_HelpUrl']     = {'en': '',                            'de': ''};
+
+// --- define operators --------------------------------------------------
+Blockly.Words['multiplex_operators_DOT']       = {'en': 'Fixed Property',      'de': 'Feste Eigenschaft',    'sign': {}             };
+Blockly.Words['multiplex_operators_SQUARE']    = {'en': 'Variable Property',   'de': 'Variable Eigenschaft', 'sign': {}             };
+Blockly.Words['multiplex_operators_ROUND']     = {'en': 'Function Invocation', 'de': 'Funktionsaufruf',      'sign': {}             };
+Blockly.Words['multiplex_operators_NEGATIV']   = {'en': 'Negativ',             'de': 'Negativ',              'sign': {}             };
+Blockly.Words['multiplex_operators_NOT']       = {'en': 'Not',                 'de': 'Nicht',                'sign': {}             };
+Blockly.Words['multiplex_operators_ADD']       = {'en': 'Add',                 'de': 'Plus',                 'sign': {}             };
+Blockly.Words['multiplex_operators_SUBTR']     = {'en': 'Subtract',            'de': 'Minus',                'sign': {}             };
+Blockly.Words['multiplex_operators_MULTI']     = {'en': 'Multiply',            'de': 'Mal',                  'sign': {}             };
+Blockly.Words['multiplex_operators_DIVI']      = {'en': 'Divide',              'de': 'Geteilt',              'sign': {}             };
+Blockly.Words['multiplex_operators_MOD']       = {'en': 'Modulo',              'de': 'Rest',                 'sign': {}             };
+Blockly.Words['multiplex_operators_POW']       = {'en': 'Power',               'de': 'Potenz',               'sign': {'de': 'hoch'} };
+Blockly.Words['multiplex_operators_ROOT']      = {'en': 'ˣRoot',               'de': 'ˣWurzel',              'sign': {}             };
+Blockly.Words['multiplex_operators_LT']        = {'en': 'lower then',          'de': 'kleiner als',          'sign': {}             };
+Blockly.Words['multiplex_operators_LE']        = {'en': 'lower equal',         'de': 'kleiner gleich',       'sign': {}             };
+Blockly.Words['multiplex_operators_GT']        = {'en': 'greater then',        'de': 'größer als',           'sign': {}             };
+Blockly.Words['multiplex_operators_GE']        = {'en': 'greater equal',       'de': 'größer gleich',        'sign': {}             };
+Blockly.Words['multiplex_operators_EQUAL']     = {'en': 'equal',               'de': 'gleich',               'sign': {}             };
+Blockly.Words['multiplex_operators_NOTEQUAL']  = {'en': 'not equal',           'de': 'nicht gleich',         'sign': {}             };
+Blockly.Words['multiplex_operators_AND']       = {'en': 'and',                 'de': 'und',                  'sign': {}             };
+Blockly.Words['multiplex_operators_OR']        = {'en': 'or',                  'de': 'oder',                 'sign': {}             };
+Blockly.Words['multiplex_operators_SET']       = {'en': 'set',                 'de': 'setzen',               'sign': {}             };
+Blockly.Words['multiplex_operators_SET_ADD']   = {'en': 'set Add',             'de': 'setzen Plus',          'sign': {}             };
+Blockly.Words['multiplex_operators_SET_SUBTR'] = {'en': 'set Subtract',        'de': 'setzen Minus',         'sign': {}             };
+Blockly.Words['multiplex_operators_SET_MULTI'] = {'en': 'set Multiply',        'de': 'setzen Mal',           'sign': {}             };
+Blockly.Words['multiplex_operators_SET_DIVI']  = {'en': 'set Divide',          'de': 'setzen Geteilt',       'sign': {}             };
+Blockly.Words['multiplex_operators_SET_MOD']   = {'en': 'set Modulo',          'de': 'setzen Rest',          'sign': {}             };
+Blockly.Words['multiplex_operators_SET_POW']   = {'en': 'set Power',           'de': 'setzen Potenz',        'sign': {}             };
+Blockly.Words['multiplex_operators_SET_DEFLT'] = {'en': 'set if empty',        'de': 'setzen falls leer',    'sign': {}             };
+
+Blockly.Words['multiplex_operators_POW']  = {'sign': {'de': 'hoch'}};
 
 Blockly.Constants.Operators = {
   dropdownById: function(...ids) {
@@ -52,7 +65,7 @@ Blockly.Constants.Operators = {
   	if (!type) return 'error';
     return Object.values(this).filter(op => op.type == type).map(op => op.dropdown)
   },
-  add: function(id, sign, type, code, order, validator) {
+  add: function(id, sign, type, code, order, validator, languageSigns = {}) {
     this[id] = {
       id: id,
       //name: this.word //Blockly.Words['multiplex_operators_'+id],
@@ -63,7 +76,10 @@ Blockly.Constants.Operators = {
       validator: validator,
       get dropdown() { return [this.sign, this.id] },
       get word() { return Blockly.Words['multiplex_operators_'+this.id][systemLang] },
-      get sign() { return this._sign || this.word }
+      get langSign() {
+        return Blockly.Words['multiplex_operators_'+this.id].sign[systemLang] || null
+      },
+      get sign() { return this.langSign || this._sign || this.word }
     }
   }
 }
@@ -345,7 +361,7 @@ Blockly.Multiplex.JAVASCRIPT = function(block) {
 // --- multiplex_logic --------------------------------------------------
 Blockly.Blocks['multiplex_logic_container'] =
      new Blockly.Multiplex.CONTAINER({
-       title: 'Logik Operatoren:',
+       title: Blockly.Words['multiplex_logic_container'][systemLang],
        NextStatement: 'first', //alias: setCheck
        colour: 210,
        tooltip: ''
@@ -390,7 +406,7 @@ Blockly.Test.blocks['multiplex_logic'] =
 // --- multiplex_arith --------------------------------------------------
 Blockly.Blocks['multiplex_arith_container'] =
      new Blockly.Multiplex.CONTAINER({
-       title: 'Arithmetische Operatoren:',
+       title: Blockly.Words['multiplex_arith_container'][systemLang],
        NextStatement: 'first', //alias: setCheck
        colour: 200,
        tooltip: ''
@@ -577,7 +593,7 @@ Blockly.Multiplex.codeGenerator  = function(block, arg = []) {
 // --- multiplex_property --------------------------------------------------
 Blockly.Blocks['multiplex_property_container'] =
      new Blockly.Multiplex.CONTAINER({
-       title: 'Eigenschafts Operatoren:',
+       title: Blockly.Words['multiplex_property_container'][systemLang],
        NextStatement: 'first', //alias: setCheck
        colour: 110,
        tooltip: ''
