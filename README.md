@@ -52,13 +52,15 @@ The Telgram adapter is optional.
 
 ### Instructions for use
 
+I don't know how to create an automatic install package, therefore the repository must be copied and executed manually.
+
 1. This reposetory must copy to javascript.admin/google-blockly/custom
 
    *default: /opt/iobroker/iobroker-data/files/javascript.admin/google-blockly/custom*
 
 2. Execute ./build.py
 
-   *this take all js-file-path from './', './blocks' and './blocks/msg' an links it to javascript.admin/tab.html and Sandbox*
+   *this take all js-file-path from './', './blocks' and './blocks/msg' and links it to javascript.admin/tab.html and Sandbox*
 
 3. Restart system to confirm settings
 
