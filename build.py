@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# this take all js-file-path from './', './blocks' and './blocks/msg'
+# and links it to javascript.admin/tab.html and Sandbox
 import fileinput, re, glob, os, getopt, sys
 
 # Get full command-line arguments
