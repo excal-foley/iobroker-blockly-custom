@@ -3,34 +3,45 @@ Add custom blocks to ioBroker-Blockly
 
 ### Extract of blocks to be added
 
-**Multiple arithmetic- and logic-blocks**
-<br/><img src="examples/multiplex_arith.png" alt="" width="400"/>
-<br/><img src="examples/multiplex_logic.png" alt="" width="400"/>
+**> Multiple arithmetic- and logic-blocks <**<br/>
+<img src="examples/multiplex_arith.png" alt="" width="400"/><br/>
+<img src="examples/multiplex_logic.png" alt="" width="400"/>
 
-**Telegram keybord generator**
-<br/><img src="examples/telegram_keyboard.png" alt="" width="400"/>
-<br/><img src="examples/telegram_keyboard2.png" alt="" width="400"/>
+**> Telegram keybord generator <**<br/>
+<img src="examples/telegram_keyboard.png" alt="" width="400"/>
+<img src="examples/telegram_keyboard2.png" alt="" width="200"/>
 
-**gets the index of list-loop**
+**> is value between this and that <**<br/>
+<img src="examples/logic_between.png" alt="" width="200"/>
 
-**is value between this and that**
-<br/><img src="examples/logic_between.png" alt="" width="400"/>
+**> if empty then <**<br/>
+<img src="examples/logic_ifEmpty.png" alt="" width="400"/>
 
-**if empty then**
-<br/><img src="examples/logic_ifEmpty.png" alt="" width="400"/>
+<br/>
 
-**Multiple property/function-block**
+**> gets the index of list-loop <**
+
+<br/>
+
+**> Multiple property/function-block <**
+
+<br/>
 
 ...and much more
 
+<br/>
 
 ### Note / Disclaimer
 
 This project is in an early alpha phase.
 
-The blocks could still contain bugs or be modified so that they are not downward compatible. For this reason they should not be transferred to a live/productive system.
+The blocks could still contain bugs or be modified so that they are not downward compatible. For this reason they should'nt be transferred to a live/productive system.
+
+Currently the project is only translated into English and German
 
 Since changes to the Blockly website in ioBroker are only applied after a restart, I have added the sandbox. It is for testing newly created blocks. If there is a quick way to apply changes without restarting, then the sandbox can be removed.
+
+This is my first project on Github and i hope i can give and get help.
 
 ### Requirement
 
@@ -47,7 +58,7 @@ The Telgram adapter is optional.
 
 2. Execute ./build.py
 
-   *this add all js-files from './', './blocks' and './blocks/msg' an merge it to javascript.admin/tab.html and Sandbox*
+   *this take all js-file-path from './', './blocks' and './blocks/msg' an links it to javascript.admin/tab.html and Sandbox*
 
 3. Restart system to confirm settings
 
