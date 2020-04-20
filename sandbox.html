@@ -2,63 +2,54 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="shortcut icon" href="sandbox/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" value="notranslate">
   <title>ioBroker-blockly development</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="sandbox/style.css">
 
-  <script type="text/javascript" src="../../../vendor/socket.io.js"></script>
+  <script type="text/javascript" src="../../vendor/socket.io.js"></script>
 
-  <!--Zum localem Speichern der Blocks-->
-  <script src="storage.js"></script><!---->
+  <script src="sandbox/storage.js"></script><!--save blocks local-->
+  <script src="../blockly_compressed.js"></script>
+  <script src="../blocks_compressed.js"></script>
+  <script src="../javascript_compressed.js"></script>
 
-  <script src="../../blockly_compressed.js"></script><!---->
-  <script src="../../blocks_compressed.js"></script>
-  <script src="../../javascript_compressed.js"></script>
+  <script src="sandbox/code.js"></script>
 
-  <script src="code.js"></script>
-
-  <!--for Sandbox-->
-  <script type="text/javascript">
+  <script>
+  // this block makes sandbox cmpatible with ioBroker blocks
+      // set systemLang for ioBroker words
       var systemLang = Code.getLang();
-      //console.log('Language: '+systemLang);
 
       function getHelp(word) {
           return 'https://github.com/ioBroker/ioBroker.javascript/blob/master/README.md#' + Blockly.Words[word][systemLang];
       }
 
-      if (!scripts) {
-        var scripts = {
-          get blocklyWorkspace() {
-            return Blockly.getMainWorkspace();
-          }
-        }
-      }
+      if (!scripts) var scripts = {
+          get blocklyWorkspace() { return Blockly.getMainWorkspace() }
+      };
+
+      window.main = {}; // window.main.objects
   </script>
 
   <!-- start add ioBroker Blocks -->
-    <script type="text/javascript" src="../../msg/messages.js"></script>
-    <!--<script type="text/javascript" src="../../msg/js/de.js"></script>-->
-
-    <script type="text/javascript" src="../../own/blocks_words.js"></script>
-
-    <!--<script type="text/javascript" src="../../own/field_oid.js"></script><!---->
-    <!--<script type="text/javascript" src="../../own/field_cron.js"></script><!---->
-    <!--<script type="text/javascript" src="../../own/field_script.js"></script><!---->
-    <!--<script type="text/javascript" src="../../own/blocks_system.js"></script><!---->
-    <script type="text/javascript" src="../../own/blocks_action.js"></script>
-    <script type="text/javascript" src="../../own/blocks_sendto.js"></script>
-    <script type="text/javascript" src="../../own/blocks_time.js"></script>
-    <script type="text/javascript" src="../../own/blocks_convert.js"></script>
-    <!--<script type="text/javascript" src="../../own/blocks_trigger.js"></script><!---->
-    <script type="text/javascript" src="../../own/blocks_procedures.js"></script>
-    <script type="text/javascript" src="../../own/blocks_timeout.js"></script>
-
-    <script type="text/javascript" src="../../../../telegram.admin/blockly.js"></script>
+    <script type="text/javascript" src="../own/blocks_words.js"></script>
+    <script type="text/javascript" src="../own/field_oid.js"></script>
+    <script type="text/javascript" src="../own/field_cron.js"></script>
+    <script type="text/javascript" src="../own/field_script.js"></script>
+    <script type="text/javascript" src="../own/blocks_system.js"></script>
+    <script type="text/javascript" src="../own/blocks_action.js"></script>
+    <script type="text/javascript" src="../own/blocks_sendto.js"></script>
+    <script type="text/javascript" src="../own/blocks_time.js"></script>
+    <script type="text/javascript" src="../own/blocks_convert.js"></script>
+    <script type="text/javascript" src="../own/blocks_trigger.js"></script>
+    <script type="text/javascript" src="../own/blocks_procedures.js"></script>
+    <script type="text/javascript" src="../own/blocks_timeout.js"></script>
+    <script type="text/javascript" src="../../../telegram.admin/blockly.js"></script>
   <!-- end add ioBroker Blocks -->
 
-    <!--start custom blocks--><script type="text/javascript" src="../../../google-blockly/custom/category.js"></script><script type="text/javascript" src="../../../google-blockly/custom/original_fixes.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/logic_ifEmpty.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/telegram_keyboard.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/multiplex.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/loops.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/math_rnd_multiple.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/old_own_code.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/logic_between.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/custom.js"></script><script type="text/javascript" src="../../../google-blockly/custom/blocks/msg/de_ioBroker_change.js"></script><!--end custom blocks-->
+    <!--start custom blocks--><script type="text/javascript" src="../../google-blockly/custom/category.js"></script><script type="text/javascript" src="../../google-blockly/custom/original_fixes.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/logic_ifEmpty.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/telegram_keyboard.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/multiplex.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/loops.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/math_rnd_multiple.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/old_own_code.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/logic_between.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/custom.js"></script><script type="text/javascript" src="../../google-blockly/custom/blocks/msg/de_ioBroker_change.js"></script><!--end custom blocks-->
 
 </head>
 <body>
@@ -89,13 +80,13 @@
             </td>
             <td class="tabmax">
               <button id="trashButton" class="notext" title="...">
-                <img src='../../media/1x1.gif' class="trash icon21">
+                <img src='../media/1x1.gif' class="trash icon21">
               </button>
               <button id="linkButton" class="notext" title="...">
-                <img src='../../media/1x1.gif' class="link icon21">
+                <img src='../media/1x1.gif' class="link icon21">
               </button>
               <button id="runButton" class="notext primary" title="...">
-                <img src='../../media/1x1.gif' class="run icon21">
+                <img src='../media/1x1.gif' class="run icon21">
               </button>
             </td>
           </tr>

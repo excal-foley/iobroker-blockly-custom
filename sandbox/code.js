@@ -393,7 +393,7 @@ Code.init = function() {
            length: 3,
            colour: '#ccc',
            snap: true},
-       media: '../../media/',
+       media: '../media/',
        rtl: rtl,
        toolbox: toolboxXml,
        zoom:
@@ -538,9 +538,11 @@ Code.discard = function() {
   }
 };
 
+// Load default language strings.
+document.write('<script src="../msg/messages.js"></script>\n');
 // Load the Code demo's language strings.
-document.write('<script src="../../own/msg/' + Code.LANG + '.js"></script>\n');
+document.write('<script src="../own/msg/' + Code.LANG + '.js"></script>\n');
 // Load Blockly's language strings.
-document.write('<script src="../../msg/js/' + Code.LANG + '.js"></script>\n');
+document.write('<script src="../msg/js/' + Code.LANG + '.js"></script>\n');
 
 window.addEventListener('load', Code.init);

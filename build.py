@@ -41,7 +41,7 @@ for js_path in js_paths:
         code_for_insert += html_js_code.replace('%%%%', os.path.join(relative_js_path, file))
         print('    '+file)
 
-code_for_insert_sanbox = re.sub('"google-blockly', '"../../../google-blockly', code_for_insert, flags=re.M)
+code_for_insert_sanbox = re.sub('"google-blockly', '"../../google-blockly', code_for_insert, flags=re.M)
 
 # create ".bak2" backup-file, if ".bak" already exist
 if os.path.isfile(html_path+'.bak'):
@@ -79,7 +79,7 @@ for current_argument, current_value in arguments:
         print('\n Links delete')
     if current_argument in ('-t', '--test', '-a', '--all'):
         #print ('Write test-system')
-        insert_code(code_for_insert_sanbox, 'sandbox/index.html')
+        insert_code(code_for_insert_sanbox, 'sandbox.html')
         testIsWrite = True
     if current_argument in ('-l', '--live', '-a', '--all'):
         #print ('Write live-system')
