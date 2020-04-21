@@ -66,7 +66,7 @@ I don't know how to create an automatic install package, therefore the repositor
 
 4. **Restart system** to confirm settings
 
-  *Remark: I don't know how to confirm settings without restart system. Is there a short way to reload the tab.html/webserver???*
+   Remark: *I don't know how to confirm settings without restart system. Is there a short way to reload the tab.html/webserver???*
 
 5. To **restore** the original state execute "**./build.py -d**" (--delete) and then remove the folder
 
