@@ -4,18 +4,18 @@ Add custom blocks to ioBroker-Blockly
 ### Extract of blocks to be added
 
 **> Multiple arithmetic- and logic-blocks <**<br/>
-<img src="examples/multiplex_arith.png" alt="" width="400"/><br/>
-<img src="examples/multiplex_logic.png" alt="" width="400"/>
+<img src="images/multiplex_arith.png" alt="" width="400"/><br/>
+<img src="images/multiplex_logic.png" alt="" width="400"/>
 
 **> Telegram keybord generator <**<br/>
-<img src="examples/telegram_keyboard.png" alt="" width="400"/>
-<img src="examples/telegram_keyboard2.png" alt="" width="200"/>
+<img src="images/telegram_keyboard.png" alt="" width="400"/>
+<img src="images/telegram_keyboard2.png" alt="" width="200"/>
 
 **> is value between this and that <**<br/>
-<img src="examples/logic_between.png" alt="" width="200"/>
+<img src="images/logic_between.png" alt="" width="200"/>
 
 **> if empty then <**<br/>
-<img src="examples/logic_ifEmpty.png" alt="" width="400"/>
+<img src="images/logic_ifEmpty.png" alt="" width="400"/>
 
 <br/>
 
@@ -37,9 +37,9 @@ This project is in an early alpha phase.
 
 The blocks could still contain bugs or be modified so that they are not downward compatible. For this reason they should'nt be transferred to a live/productive system.
 
-Currently the project is only translated into English and German
+You can view and test the blocks in sandbox.html, if the reposetory is copied to javascript.admin/google-blockly/custom
 
-Since changes to the Blockly website in ioBroker are only applied after a restart, I have added the sandbox. It is for testing newly created blocks. If there is a quick way to apply changes without restarting, then the sandbox can be removed.
+Currently the project is only translated into English and German.
 
 This is my first project on Github and i hope i can give and get help.
 
@@ -54,16 +54,21 @@ The Telgram adapter is optional.
 
 I don't know how to create an automatic install package, therefore the repository must be copied and executed manually.
 
-1. This reposetory must copy to javascript.admin/google-blockly/custom
+1. This reposetory must **copy to javascript.admin/google-blockly/custom**
 
    *default: /opt/iobroker/iobroker-data/files/javascript.admin/google-blockly/custom*
 
-2. Execute ./build.py
+2. You can view and test the blocks in **sandbox.html**
 
-   *this take all js-file-path from './', './blocks' and './blocks/msg' and links it to javascript.admin/tab.html and Sandbox*
+3. Execute **./build.py**
 
-3. Restart system to confirm settings
+   *This take all js-file-path from './', './blocks' and './blocks/msg' and links it to javascript.admin/tab.html and Sandbox*
 
+4. **Restart system** to confirm settings
+
+   Remark: *I don't know how to confirm settings without restart system. Is there a short way to reload the tab.html/webserver???*
+
+5. To **restore** the original state execute "**./build.py -d**" (--delete) and then remove the folder
 
 ## Links
 [this project - Github page](https://github.com/excal-foley/iobroker-blockly-custom)

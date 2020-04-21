@@ -11,6 +11,9 @@ Blockly.Words['math_rnd_multiple_rounddown']          = {'en': 'Round Down',    
 Blockly.Words['math_rnd_multiple_multiple_of']        = {'en': 'to multiple of',          'de': 'zu Vielfaches von'};
 Blockly.Words['math_rnd_multiple_absolut']            = {'en': '|  Absolute',             'de': '|  Betrag'};
 Blockly.Words['math_rnd_multiple_value']              = {'en': '|  Value',                'de': '|  Wert'};
+Blockly.Words['math_rnd_multiple_Tooltip']            = {'en': '',                        'de': ''};
+Blockly.Words['math_rnd_multiple_HelpUrl']            = {'en': '',                        'de': ''};
+
 
 Blockly.Test.blocks['math_rnd_multiple'] =
     '<block type="math_rnd_multiple">'
@@ -50,8 +53,8 @@ Blockly.Blocks['math_rnd_multiple'] = {
     this.setInputsInline(true);
     this.setOutput(true, 'Number');
     this.setColour(Blockly.Constants.Math.HUE);
-    this.setTooltip('');
-    this.setHelpUrl('');
+    this.setTooltip(Blockly.Words['math_rnd_multiple_Tooltip']);
+    this.setHelpUrl(Blockly.Words['math_rnd_multiple_HelpUrl']);
     this.initSvg();
   },
 

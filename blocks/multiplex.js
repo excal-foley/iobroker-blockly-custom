@@ -7,6 +7,10 @@ goog.require('Blockly.Blocks');
 goog.require('Blockly');
 
 Blockly.Multiplex = {};
+Blockly.Multiplex.items = {};
+Blockly.Multiplex.item = {};
+Blockly.Multiplex.elements = {};
+Blockly.Multiplex.field = {};
 
 var systemLang = systemLang || 'en';//// TODO: delete this and mak compatible with ioBroker
 
@@ -21,6 +25,7 @@ Blockly.Words['multiplex_property_container']   = {'en': 'Property Operators',  
 //Blockly.Words['multiplex_property_HelpUrl']     = {'en': '',                            'de': ''};
 
 // --- define operators --------------------------------------------------
+// sign is optional, if the language-neutral sign is not appropriate
 Blockly.Words['multiplex_operators_DOT']       = {'en': 'Fixed Property',      'de': 'Feste Eigenschaft',    'sign': {}             };
 Blockly.Words['multiplex_operators_SQUARE']    = {'en': 'Variable Property',   'de': 'Variable Eigenschaft', 'sign': {}             };
 Blockly.Words['multiplex_operators_ROUND']     = {'en': 'Function Invocation', 'de': 'Funktionsaufruf',      'sign': {}             };
@@ -50,7 +55,9 @@ Blockly.Words['multiplex_operators_SET_MOD']   = {'en': 'set Modulo',          '
 Blockly.Words['multiplex_operators_SET_POW']   = {'en': 'set Power',           'de': 'setzen Potenz',        'sign': {}             };
 Blockly.Words['multiplex_operators_SET_DEFLT'] = {'en': 'set if empty',        'de': 'setzen falls leer',    'sign': {}             };
 
-Blockly.Words['multiplex_operators_POW']  = {'sign': {'de': 'hoch'}};
+// sets the default-value from an empty input to this check-value [check-type, default-value]
+Blockly.Constants.checkInputDeflt = [ [null, '0'], ['Number', '0'], ['Boolean', 'false'], ['String', "''"], ['Array', '[]'], ['Colour', '#000000'] ];
+Blockly.Constants.invalidChr = /(^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$)|(^\d+(?=\D|$))|[\W]*/g;
 
 Blockly.Constants.Operators = {
   dropdownById: function(...ids) {
@@ -85,8 +92,8 @@ Blockly.Constants.Operators = {
 }
 
 //                             ( 'id',        'sign',    'type',  'code',                order,                                   Validator                       ),
-Blockly.Constants.Operators.add( 'DOT',       '.',       '',      '${5}.${6}',           Blockly.JavaScript.ORDER_MEMBER,         /[\W]*/                         ),
-Blockly.Constants.Operators.add( 'SQUARE',    '[ ]',     '',      '${5}[${4}]',          Blockly.JavaScript.ORDER_MEMBER,         ['String', 'Number', 'Boolean'] ),
+Blockly.Constants.Operators.add( 'DOT',       '.',       '',      '${5}.${6}',           Blockly.JavaScript.ORDER_MEMBER,         Blockly.Constants.invalidChr    ),
+Blockly.Constants.Operators.add( 'SQUARE',    '[',     '',      '${5}[${4}]',          Blockly.JavaScript.ORDER_MEMBER,         ['String', 'Number', 'Boolean'] ),
 Blockly.Constants.Operators.add( 'ROUND',     '( )',     '',      '${5}(${4})',          Blockly.JavaScript.ORDER_FUNCTION_CALL,  ''                              ),
 Blockly.Constants.Operators.add( 'NEGATIV',   '\u2212',  '',      '-${2}',               Blockly.JavaScript.ORDER_UNARY_NEGATION, ''                              ),
 Blockly.Constants.Operators.add( 'NOT',       '\u2757',  '',      '!${2}',               Blockly.JavaScript.ORDER_LOGICAL_NOT,    ''                              ),
@@ -114,32 +121,26 @@ Blockly.Constants.Operators.add( 'SET_MOD',   'mod=',    'assig', '${5} %= ${6}'
 Blockly.Constants.Operators.add( 'SET_POW',   '^=',      'assig', '${5} **= ${6}',       Blockly.JavaScript.ORDER_ASSIGNMENT,     ['Number']                      ),
 Blockly.Constants.Operators.add( 'SET_DEFLT', null,      'assig', '${5} = ${5} || ${6}', Blockly.JavaScript.ORDER_LOGICAL_OR,     null                            ),
 
-Blockly.Constants.Operators.add( 'DOT',       '.',       '',      '${5}.${6}',           Blockly.JavaScript.ORDER_MEMBER,         /[\W]*/                         ),
-Blockly.Constants.Operators.add( 'SQUARE',    '[ ]',     '',      '${5}[${4}]',          Blockly.JavaScript.ORDER_MEMBER,         ['String', 'Number', 'Boolean'] ),
-Blockly.Constants.Operators.add( 'ROUND',     '( )',     '',      '${5}(${4})',          Blockly.JavaScript.ORDER_FUNCTION_CALL,  ''                              ),
 
-// sets the default-value from an empty input to this check-value [check-type, default-value]
-Blockly.Constants.checkInputDeflt = [ [null, '0'], ['Number', '0'], ['Boolean', 'false'], ['String', "''"], ['Array', '[]'], ['Colour', '#000000'] ];
-
-Blockly.Multiplex.BLOCK = function(container, items) {
+Blockly.Multiplex.BLOCK = function(json, container, items, initFixInput) {
   return {
     init: function() {
-      let input = this.appendValueInput('FIX_INPUT0')
-                      .setAlign(Blockly.ALIGN_RIGHT)
-                      .setCheck(['String', 'Number', 'Boolean']);
-
-      input.codeMap = [ ['INPUT', 'FIX_INPUT0'] ];
-
-      this.setInputsInline(true);
-      this.setOutput(true, 'Boolean');// TODO: Variabler check
-      this.setColour(230);
-      this.setTooltip('');
-      this.setHelpUrl('');
+      if (initFixInput) initFixInput(this);
+      this.jsonInit(json);
 
       // Configure the mutator UI.
       this.updateShape_()
       this.setMutator(new Blockly.Mutator(items));
     },
+
+    getLastFixInput: function() {
+      //let inputNumbers = this.inputList.map(input => +input.name.match(/(?<=^INPUT)(-?\d?\d)(?=$)/g)[0]);
+      let inputNumbers = this.inputList.map(input => +input.itemNr);
+      let min = Math.min(...inputNumbers);
+      return (min < 0) ? this.getInput('INPUT' + min) : null
+    },
+
+    strongTyped_: true,
 
     elements_: items,
 
@@ -149,9 +150,9 @@ Blockly.Multiplex.BLOCK = function(container, items) {
      * @this Blockly.Block
      */
     mutationToDom: function() {
-      let container = Blockly.utils.xml.createElement('mutation');
-      container.setAttribute('elements', this.elements_.join(','));
-      return container;
+      let mutation = Blockly.utils.xml.createElement('mutation');
+      mutation.setAttribute('elements', this.elements_.join(','));
+      return mutation;
     },
     /**
      * Parse XML to restore the text inputs.
@@ -171,8 +172,13 @@ Blockly.Multiplex.BLOCK = function(container, items) {
      */
     decompose: function(workspace) {
       let containerBlock = workspace.newBlock(container);
+      let containerInput = containerBlock.getInput('STACK');
+      let lastFixInput = this.getLastFixInput();
+      let containerCheck = (lastFixInput && lastFixInput.connection
+                                && lastFixInput.connection.check_) || null;// TODO: make check variable
+      containerInput.setCheck(containerCheck);
       containerBlock.initSvg();
-      let connection = containerBlock.getInput('STACK').connection;
+      let connection = containerInput.connection;
       for (let itemName of this.elements_) {
         var itemBlock = workspace.newBlock(itemName);
         itemBlock.initSvg();
@@ -193,7 +199,7 @@ Blockly.Multiplex.BLOCK = function(container, items) {
       let i = 0;
       while (itemBlock) {
         for (let itemInput of itemBlock.inputList) {
-          var input = this.inputList.filter(input => 'itemNr' in input)[i];
+          var input = this.inputList.filter(input => input.itemNr >= 0)[i];
           itemInput.valueConnection_ = input && input.connection
                                         && input.connection.targetConnection;
           itemInput.fieldPara_ = {};
@@ -229,7 +235,7 @@ Blockly.Multiplex.BLOCK = function(container, items) {
             itemBlock.nextConnection.targetBlock();
       }
       // Disconnect any children that don't belong.
-      for (let input of this.inputList.filter(input => 'itemNr' in input)) {
+      for (let input of this.inputList.filter(input => input.itemNr >= 0)) {
         var connection = input.connection && input.connection.targetConnection;
         if (connection && connections.indexOf(connection) == -1) {
           connection.disconnect();
@@ -255,7 +261,7 @@ Blockly.Multiplex.BLOCK = function(container, items) {
     updateShape_: function() {
       // Remove all inputs.
       let input;
-      while (input = this.inputList.filter(input => 'itemNr' in input)[0]) {
+      while (input = this.inputList.filter(input => input.itemNr >= 0)[0]) {
         this.removeInput(input.name);
       }
       // Add all inputs.
@@ -267,18 +273,10 @@ Blockly.Multiplex.BLOCK = function(container, items) {
   }
 }
 
-Blockly.Multiplex.CONTAINER = function(container) {
-  this.init = function() {
-    this.appendDummyInput()
-        .appendField(container.title);
-    this.appendStatementInput('STACK')
-        .setCheck(container.NextStatement);
-
-    this.contextMenu = false;
-    this.setInputsInline(true);
-    this.setColour(container.colour || 0);
-    this.setTooltip(container.tooltip || '');
-  }
+Blockly.Multiplex.JAVASCRIPT = function(block) {
+  let code = new Blockly.Multiplex.codeGenerator(block);
+  for (let input of block.inputList) code.addLinks(input.codeMap);
+  return code.getCode()
 }
 
 /**
@@ -299,101 +297,178 @@ Blockly.Multiplex.DROPDOWN_VALIDATOR = function(newValue = this.getValue()) {
     let newElement = 'multiplex_' + newValue;
     block.elements_[itemNr] = newElement;
     let check = Blockly.Constants.Operators[newValue].validator || null;
-    input.setCheck(check);
+    if (input.type==1) input.setCheck(check);
   }
   return newValue;
 }
 
-/**
- * [description]
- * @param  {[type]} obj [description]
- * @return {[type]}     [description]
- */
-Blockly.Multiplex.ITEM = function(obj) {
-  this.init = new Blockly.Multiplex.ITEM_BLOCK(obj.item);
-  this.setElements = new Blockly.Multiplex.ITEM_SETELEMENTS(obj.element);
+// --- fields --------------------------------------------------
+
+Blockly.Multiplex.field.push_INPUT_CODE = function(input) {
+  let type = ['DUMMY', 'INPUT', 'STATEMENT'][input.type];
+  input.codeMap.push([type, type + input.itemNr]);
 }
 
-Blockly.Multiplex.ITEM_BLOCK = function(obj) {
+Blockly.Multiplex.field.INPUT = function( block, itemNr, inputType,
+                                        pushCode=false, check=null ) {
+  let input =
+    (inputType == 'VALUE') ? block.appendValueInput('INPUT' + itemNr) :
+    (inputType == 'SATEMENT') ? block.appendStatementInput('INPUT' + itemNr) :
+    (inputType == 'DUMMY') ? block.appendDummyInput('INPUT' + itemNr) : null;
+
+  input.setAlign(Blockly.ALIGN_RIGHT);
+  input.itemNr = itemNr;
+  input.codeMap = input.codeMap || [];
+  if (inputType != 'DUMMY') input.setCheck(check);
+
+  if (pushCode) Blockly.Multiplex.field.push_INPUT_CODE(input);
+  return input
+}
+
+Blockly.Multiplex.field.TEXTINPUT = function(input, operatorId) {
+  let n = input.itemNr;
+  let operator = Blockly.Constants.Operators[operatorId];
+  let validator = function(newValue) {
+    return newValue.replace(operator.validator, '');
+  };
+  let textInput = new Blockly.FieldTextInput('default', validator);
+  textInput.setSpellcheck(false);
+  input.appendField(textInput, 'TEXT' + n);
+
+  input.codeMap.push(['FIELD_TEXT', 'TEXT' + n]);
+}
+
+Blockly.Multiplex.field.TEXT = function(input, operatorId) {
+  input.appendField(Blockly.Constants.Operators[operatorId].sign)
+  input.codeMap.push(['OPERATOR', operatorId]);
+}
+
+Blockly.Multiplex.field.OPERATOR_DROPDOWN = function(input, list, operatorId) {
+  let n = input.itemNr;
+  let validator = Blockly.Multiplex.DROPDOWN_VALIDATOR;
+  let selector = new Blockly.FieldDropdown(list, validator);
+  if (n > -1) input.appendField(selector, 'OPERATOR' + n);
+  if (operatorId) selector.setValue(operatorId);
+  selector.callValidator();
+
+  input.codeMap.push(['FIELD_OPERATOR', 'OPERATOR' + n]);
+}
+
+// --- elements --------------------------------------------------
+
+Blockly.Multiplex.elements.DROPDOWN_INPUT = function(list, value) {
+  return function(block, itemNr) {
+    // add input
+    let input = Blockly.Multiplex.field.INPUT(block, itemNr, 'VALUE');
+    // add Operator Dropdown
+    Blockly.Multiplex.field.OPERATOR_DROPDOWN(input, list, value);
+    // push input-code
+    Blockly.Multiplex.field.push_INPUT_CODE(input);
+  }
+}
+
+Blockly.Multiplex.elements.TEXT_TEXTINPUT = function(operatorId) {
+  return function(block, itemNr) {
+    let input = Blockly.Multiplex.field.INPUT(block, itemNr, 'DUMMY');
+
+    Blockly.Multiplex.field.TEXT(input, operatorId);
+    Blockly.Multiplex.field.TEXTINPUT(input, operatorId);
+  }
+}
+
+Blockly.Multiplex.elements.TEXT_INPUT = function(operatorId) {
+  return function(block, itemNr) {
+    // add input
+    let input = Blockly.Multiplex.field.INPUT(block, itemNr, 'VALUE');
+    // add Operator Dropdown
+    Blockly.Multiplex.field.TEXT(input, operatorId);
+    // push input-code
+    Blockly.Multiplex.field.push_INPUT_CODE(input);
+  }
+}
+
+Blockly.Multiplex.elements.DROPDOWN_TEXTINPUT = function(operatorId) {
+  return function(block, itemNr) {
+    let input = Blockly.Multiplex.field.INPUT(block, itemNr, 'DUMMY');
+
+    Blockly.Multiplex.field.OPERATOR_DROPDOWN(input, list, value);
+    Blockly.Multiplex.field.TEXTINPUT(input, operatorId);
+  }
+}
+
+Blockly.Multiplex.elements.INPUT = function() {
+  return function(block, itemNr) {
+    // add input
+    let input = Blockly.Multiplex.field.INPUT(block, itemNr, 'VALUE', true);
+  }
+}
+
+
+// --- ############## --------------------------------------------------
+Blockly.Multiplex.ContainerJson = class {
+  constructor(title, check, colour, style, tooltip) {
+    this.title = title;
+    this.args0 = [ {"type": "input_dummy"}, { "type": "input_statement",
+                                              "name": "STACK", "check": check} ];
+    this.colour = colour || null;
+    this.style = style || null;
+    this.tooltip = tooltip || '';
+  }
+  set title(title) { this.message0 = title+" %1 %2" }
+  set check(check) { this.args0[1].check = check }
+}
+
+Blockly.Multiplex.items.BLOCK_JSON = class {
+  constructor(title, previousStatement, nextStatement, colour, style, tooltip) {
+    this.title = title;
+    this.previousStatement = previousStatement || null;
+    this.nextStatement = nextStatement || null;
+    this.colour = colour || null;
+    this.style = style || null;
+    this.tooltip = tooltip || '';
+  }
+  set title (title) { this.message0 = title }
+}
+
+Blockly.Multiplex.items.BLOCK = function(json, inputCount=1) {
   return function() {
-    this.appendDummyInput()
-        .appendField(obj.title || 'ERROR');
-    for (let i = 2; i == (obj.inputCount || 1); i++) this.appendDummyInput();
-
     this.contextMenu = false;
-    this.setPreviousStatement(true, obj.PreviousStatement || null);
-    this.setNextStatement(true, obj.NextStatement || null);
-    this.setColour(obj.colour || 0);
-    this.setTooltip(obj.tooltip || '');
+    this.jsonInit(json);
+    for (let i = 2; i == (inputCount); i++) this.appendDummyInput();
   }
-}
-
-Blockly.Multiplex.ITEM_SETELEMENTS = function(obj) {
-  return function(block, itemNr, setShadow = false) {
-    //let n = block.inputList.length - 1;
-    // append ValueInput
-    let n = itemNr;
-    let input = block.appendValueInput('INPUT' + n)
-                     .setAlign(Blockly.ALIGN_RIGHT)
-                     .setCheck(obj.setCheck);
-
-    // append Dropdown
-    let validator = Blockly.Multiplex.DROPDOWN_VALIDATOR;
-    let selector = new Blockly.FieldDropdown(obj.dropdown, validator);
-    if (n > -1) input.appendField(selector, 'OPERATOR' + n);
-    selector.setValue(obj.operator);
-    selector.callValidator();
-
-    // set codeMap
-    input.itemNr = itemNr;
-    input.codeMap = (n > -1) ? [ ['FIELD_OPERATOR', 'OPERATOR' + n] ] : [];
-    input.codeMap.push(['INPUT', 'INPUT' + n]);
-  }
-}
-
-Blockly.Multiplex.JAVASCRIPT = function(block) {
-  // Bitet verschiedene Rechenoperationen an
-  let code = new Blockly.Multiplex.codeGenerator(block);
-  for (let input of block.inputList) code.addLinks(input.codeMap);
-  return code.getCode()
 }
 
 // --- multiplex_logic --------------------------------------------------
-Blockly.Blocks['multiplex_logic_container'] =
-     new Blockly.Multiplex.CONTAINER({
-       title: Blockly.Words['multiplex_logic_container'][systemLang],
-       NextStatement: 'first', //alias: setCheck
-       colour: 210,
-       tooltip: ''
-     });
-
-Blockly.Multiplex.Logic_Item = function(operator) {
-  return new Blockly.Multiplex.ITEM({
-    item: {
-      title: Blockly.Constants.Operators[operator].word,
-      PreviousStatement: null,
-      NextStatement: null,
-      colour: 230,
-      tooltip: '',
-      inputCount: 1
-    },
-    element: {
-      operator: operator,
-      setCheck: '',
-      dropdown: Blockly.Constants.Operators.dropdownByType('logic')
-    }
-  });
+Blockly.Blocks['multiplex_logic_container'] = {
+  init: function() {
+    let title = Blockly.Words['multiplex_logic_container'][systemLang];
+    this.jsonInit(new Blockly.Multiplex.ContainerJson(title, null, 230, null, ''));
+    this.contextMenu = false;
+  }
 }
 
-Blockly.Blocks['multiplex_AND'] = Blockly.Multiplex.Logic_Item('AND');
-Blockly.Blocks['multiplex_OR'] = Blockly.Multiplex.Logic_Item('OR');
+Blockly.Multiplex.item.LOGIC = function(operator, tooltip='Logic') {
+  let title = Blockly.Constants.Operators[operator].word
+  let json_item = new Blockly.Multiplex.items.BLOCK_JSON(title, ['Logic'], ['Logic'], 230, null, tooltip);
+  let list = Blockly.Constants.Operators.dropdownByType('logic');
+  return new function() {
+    this.init = Blockly.Multiplex.items.BLOCK(json_item);
+    this.setElements = new Blockly.Multiplex.elements.DROPDOWN_INPUT(list, operator);
+  }
+}
 
-//console.log(Blockly.Blocks['multiplex_AND']);
+Blockly.Blocks['multiplex_AND'] = Blockly.Multiplex.item.LOGIC('AND');
+Blockly.Blocks['multiplex_OR'] = Blockly.Multiplex.item.LOGIC('OR');
 
 Blockly.Blocks['multiplex_logic'] = new Blockly.Multiplex.BLOCK(
+  { "inputsInline": true, "output": "Boolean", "colour": 230, "style": null, "tooltip": "", "helpUrl": "" },
                                               'multiplex_logic_container',
                                               [ 'multiplex_AND',
-                                                'multiplex_OR'  ]);
+                                                'multiplex_OR' ],
+                                                (block) => {
+                                                  Blockly.Multiplex.field.INPUT(block, -1, 'VALUE', true);
+                                                }
+                                              );
 
 Blockly.JavaScript['multiplex_logic'] = Blockly.Multiplex.JAVASCRIPT;
 
@@ -404,30 +479,138 @@ Blockly.Test.blocks['multiplex_logic'] =
     +'</block>'
 
 // --- multiplex_arith --------------------------------------------------
-Blockly.Blocks['multiplex_arith_container'] =
-     new Blockly.Multiplex.CONTAINER({
-       title: Blockly.Words['multiplex_arith_container'][systemLang],
-       NextStatement: 'first', //alias: setCheck
-       colour: 200,
-       tooltip: ''
-     });
+Blockly.Blocks['multiplex_arith_container'] = {
+  init: function() {
+    let title = Blockly.Words['multiplex_arith_container'][systemLang];
+    this.jsonInit(new Blockly.Multiplex.ContainerJson(title, null, 200, null, ''));
+    this.contextMenu = false;
+  }
+}
+
+Blockly.Multiplex.item.ARITH = function(operator, tooltip='Arith') {
+  let title = Blockly.Constants.Operators[operator].word
+  let json_item = new Blockly.Multiplex.items.BLOCK_JSON(title, ['Number'], ['Number'], 200, null, tooltip);
+  let list = Blockly.Constants.Operators.dropdownByType('arith');
+  return new function() {
+    this.init = Blockly.Multiplex.items.BLOCK(json_item);
+    this.setElements = new Blockly.Multiplex.elements.DROPDOWN_INPUT(list, operator);
+  }
+}
+
+Blockly.Blocks['multiplex_ADD'] = Blockly.Multiplex.item.ARITH('ADD');
+Blockly.Blocks['multiplex_SUBTR'] = Blockly.Multiplex.item.ARITH('SUBTR');
+Blockly.Blocks['multiplex_MULTI'] = Blockly.Multiplex.item.ARITH('MULTI');
+Blockly.Blocks['multiplex_DIVI'] = Blockly.Multiplex.item.ARITH('DIVI');
+Blockly.Blocks['multiplex_MOD'] = Blockly.Multiplex.item.ARITH('MOD');
+Blockly.Blocks['multiplex_POW'] = Blockly.Multiplex.item.ARITH('POW');
+Blockly.Blocks['multiplex_ROOT'] = Blockly.Multiplex.item.ARITH('ROOT');
+
+Blockly.Blocks['multiplex_arith'] = new Blockly.Multiplex.BLOCK(
+  { "inputsInline": true, "output": "Number", "colour": 200, "style": null, "tooltip": "", "helpUrl": "" },
+                                              'multiplex_arith_container',
+                                              [ 'multiplex_ADD',
+                                                'multiplex_SUBTR',
+                                                'multiplex_MULTI',
+                                                'multiplex_DIVI',
+                                                'multiplex_MOD',
+                                                'multiplex_POW',
+                                                'multiplex_ROOT' ],
+                                                (block) => {
+                                                  Blockly.Multiplex.field.INPUT(block, -1, 'VALUE', true);
+                                                }
+                                              );
+
+Blockly.JavaScript['multiplex_arith'] = Blockly.Multiplex.JAVASCRIPT;
+
+Blockly.Test.blocks['multiplex_arith'] =
+    '<block type="multiplex_arith">'
+    +'  <mutation elements="multiplex_ADD"></mutation>'
+    +'  <field name="OPERATOR0">ADD</field>'
+    +'</block>'
+
+// --- multiplex_property --------------------------------------------------
+
+Blockly.Multiplex.item.DOT = function(operator, tooltip='Dot') {
+  let title = Blockly.Constants.Operators[operator].word
+  let json_item = new Blockly.Multiplex.items.BLOCK_JSON(title, ['Property'], null, 110, null, tooltip);
+  return new function() {
+    this.init = Blockly.Multiplex.items.BLOCK(json_item);
+    this.setElements = new Blockly.Multiplex.elements.TEXT_TEXTINPUT(operator);
+  }
+}
+
+Blockly.Multiplex.item.SQUARE = function(operator, tooltip='Square') {
+  let title = Blockly.Constants.Operators[operator].word
+  let json_item = new Blockly.Multiplex.items.BLOCK_JSON(title, ['Property'], null, 110, null, tooltip);
+  return new function() {
+    this.init = Blockly.Multiplex.items.BLOCK(json_item);
+    this.setElements = new Blockly.Multiplex.elements.TEXT_INPUT(operator);
+  }
+}
+
+Blockly.Blocks['multiplex_DOT'] = Blockly.Multiplex.item.DOT('DOT');
+Blockly.Blocks['multiplex_SQUARE'] = Blockly.Multiplex.item.SQUARE('SQUARE');
+
+// --- multiplex_all --------------------------------------------------
+
+Blockly.Multiplex.item.INPUT = function(tooltip='Input') {
+  let title = 'Number';
+  let json_item = new Blockly.Multiplex.items.BLOCK_JSON(title, ['-Number-'], ['Number'], 110, null, tooltip);
+  return new function() {
+    this.init = Blockly.Multiplex.items.BLOCK(json_item);
+    this.setElements = new Blockly.Multiplex.elements.INPUT();
+  }
+}
+
+Blockly.Blocks['multiplex_INPUT'] = Blockly.Multiplex.item.INPUT();
+
+Blockly.Blocks['multiplex_all'] = new Blockly.Multiplex.BLOCK(
+  { "inputsInline": true, "output": ["Boolean", "Number"], "colour": 230, "style": null, "tooltip": "", "helpUrl": "" },
+                                              'multiplex_logic_container',
+                                              [ 'multiplex_INPUT',
+                                                'multiplex_AND',
+                                                'multiplex_OR',
+                                                'multiplex_ADD',
+                                                'multiplex_SUBTR',
+                                                'multiplex_SQUARE',
+                                                'multiplex_DOT' ],
+                                                /*(block) => {
+                                                  Blockly.Multiplex.field.INPUT(block, -1, 'VALUE', true);
+                                                }*/
+                                              );
+
+
+Blockly.JavaScript['multiplex_all'] = Blockly.Multiplex.JAVASCRIPT;
+
+Blockly.Test.blocks['multiplex_all'] =
+    '<block type="multiplex_all">'
+    +'  <mutation elements="multiplex_AND"></mutation>'
+    +'  <field name="OPERATOR0">AND</field>'
+    +'</block>'
+
+/*/ --- multiplex_arith --------------------------------------------------
+Blockly.Blocks['multiplex_arith_container'] = {
+  init: function() {
+    let title = Blockly.Words['multiplex_arith_container'][systemLang]
+    let check = null;
+    let colour = 200;
+    let style = '';
+    let tooltip = '';
+    this.jsonInit({ "message0": title+" %1 %2", "args0": [ {"type": "input_dummy"}, {"type": "input_statement", "name": "STACK", "check": check} ], "colour": colour, "style": style, "tooltip": tooltip });
+    this.contextMenu = false;
+  }
+}
 
 Blockly.Multiplex.Arith_Item = function(operator) {
-  return new Blockly.Multiplex.ITEM({
-    item: {
-      title: Blockly.Constants.Operators[operator].word,
-      PreviousStatement: null,
-      NextStatement: null,
-      colour: 200,
-      tooltip: '',
-      inputCount: 1
-    },
-    element: {
-      operator: operator,
-      setCheck: '',
-      dropdown: Blockly.Constants.Operators.dropdownByType('arith')
-    }
-  });
+  let title = Blockly.Constants.Operators[operator].word
+  let previousStatement = null;
+  let nextStatement = null;
+  let colour = 200;
+  let style = '';
+  let tooltip = '';
+  let item_json = { "message0": title, "previousStatement": previousStatement, "nextStatement": nextStatement, "colour": colour, "style": style, "tooltip": tooltip };
+  let element_json = { operator: operator, setCheck: '', dropdown: Blockly.Constants.Operators.dropdownByType('arith') };
+  return new Blockly.Multiplex.ITEM(item_json, element_json);
 }
 
 Blockly.Blocks['multiplex_ADD'] = Blockly.Multiplex.Arith_Item('ADD');
@@ -455,6 +638,47 @@ Blockly.Test.blocks['multiplex_arith'] =
     +'  <mutation elements="multiplex_ADD"></mutation>'
     +'  <field name="OPERATOR0">ADD</field>'
     +'</block>';
+*/
+/*/ --- multiplex_property --------------------------------------------------
+Blockly.Blocks['multiplex_property_container'] =
+     new Blockly.Multiplex.CONTAINER({
+       title: Blockly.Words['multiplex_property_container'][systemLang],
+       NextStatement: 'first', //alias: setCheck
+       colour: 110,
+       tooltip: ''
+     });
+
+Blockly.Multiplex.Property_Item = function(operator) {
+  return new Blockly.Multiplex.ITEM({
+    item: {
+      title: Blockly.Constants.Operators[operator].word,
+      json: { "previousStatement": null, "nextStatement": null, "colour": 110, "style": "", "tooltip": "" }
+    },
+    element: {
+      operator: operator,
+      setCheck: '',
+      dropdown: Blockly.Constants.Operators.dropdownById('DOT','SQUARE','ROUND')
+    }
+  });
+}
+
+Blockly.Blocks['multiplex_DOT'] = Blockly.Multiplex.Property_Item('DOT');
+Blockly.Blocks['multiplex_SQUARE'] = Blockly.Multiplex.Property_Item('SQUARE');
+Blockly.Blocks['multiplex_ROUND'] = Blockly.Multiplex.Property_Item('ROUND');
+
+Blockly.Blocks['multiplex_property'] = new Blockly.Multiplex.BLOCK(
+                                              'multiplex_property_container',
+                                              [ 'multiplex_DOT',
+                                                'multiplex_SQUARE',
+                                                'multiplex_ROUND'  ]);
+
+Blockly.JavaScript['multiplex_property'] = Blockly.Multiplex.JAVASCRIPT;
+
+Blockly.Test.blocks['multiplex_property'] =
+    '<block type="multiplex_property">'
+  //  +'  <mutation elements="multiplex_AND"></mutation>'
+  //  +'  <field name="OPERATOR0">AND</field>'
+    +'</block>' */
 
 // --- math_set_operators --------------------------------------------------
 Blockly.Test.blocks['math_set_operators'] =
@@ -464,10 +688,10 @@ Blockly.Test.blocks['math_set_operators'] =
 Blockly.Blocks['math_set_operators'] = {
   init: function() {
     //Validator for input-change
-    let setInput = function(operator) {
+    let setInput = function(operatorId) {
       var input = this.sourceBlock_.getInput('value');
-      let check = Blockly.Constants.Operators[operator] ?
-                  Blockly.Constants.Operators[operator].validator : null;
+      let check = Blockly.Constants.Operators[operatorId] ?
+                  Blockly.Constants.Operators[operatorId].validator : null;
       input.setCheck(check);
     }
 
@@ -522,10 +746,12 @@ Blockly.Multiplex.codeGenerator  = function(block, arg = []) {
     } else if (type == 'VARIABLE') {
       code = Blockly.JavaScript.variableDB_.getName(
               block.getFieldValue(name), Blockly.Variables.NAME_TYPE);
+    } else if (type == 'TEXT') {
+      code = name;
     } else if (!isNaN(type)) {
       code = name;
       order = type;
-    }
+    } else { throw `Type: "${type}" with name: "${name}" not found!` }
 
     this.pushLastInput(order);
     this.links.push(code);
@@ -589,48 +815,3 @@ Blockly.Multiplex.codeGenerator  = function(block, arg = []) {
     return withOrder ? [links, this.maxOrder] : (links + ';\n')
   };
 }
-
-// --- multiplex_property --------------------------------------------------
-Blockly.Blocks['multiplex_property_container'] =
-     new Blockly.Multiplex.CONTAINER({
-       title: Blockly.Words['multiplex_property_container'][systemLang],
-       NextStatement: 'first', //alias: setCheck
-       colour: 110,
-       tooltip: ''
-     });
-
-Blockly.Multiplex.Property_Item = function(operator) {
-  return new Blockly.Multiplex.ITEM({
-    item: {
-      title: Blockly.Constants.Operators[operator].word,
-      PreviousStatement: null,
-      NextStatement: null,
-      colour: 130,
-      tooltip: '',
-      inputCount: 1
-    },
-    element: {
-      operator: operator,
-      setCheck: '',
-      dropdown: Blockly.Constants.Operators.dropdownById('DOT','SQUARE','ROUND')
-    }
-  });
-}
-
-Blockly.Blocks['multiplex_DOT'] = Blockly.Multiplex.Property_Item('DOT');
-Blockly.Blocks['multiplex_SQUARE'] = Blockly.Multiplex.Property_Item('SQUARE');
-Blockly.Blocks['multiplex_ROUND'] = Blockly.Multiplex.Property_Item('ROUND');
-
-Blockly.Blocks['multiplex_property'] = new Blockly.Multiplex.BLOCK(
-                                              'multiplex_property_container',
-                                              [ 'multiplex_DOT',
-                                                'multiplex_SQUARE',
-                                                'multiplex_ROUND'  ]);
-
-Blockly.JavaScript['multiplex_property'] = Blockly.Multiplex.JAVASCRIPT;
-
-Blockly.Test.blocks['multiplex_property'] =
-    '<block type="multiplex_property">'
-  //  +'  <mutation elements="multiplex_AND"></mutation>'
-  //  +'  <field name="OPERATOR0">AND</field>'
-    +'</block>'
