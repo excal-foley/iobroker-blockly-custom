@@ -4,23 +4,25 @@
  * These blocks are not intended for an official release
  */
 
-// --- system_code --------------------------------------------------
-Blockly.Custom.blocks['system_code'] =
-    '  <block type="system_code">'
-    +'  </block>';
+// --- system_input_code --------------------------------------------------
+Blockly.Custom.blocks['system_input_code'] =
+    '  <block type="system_input_code">'
+    +'    <field name="CODE0">js-code</field>'
+    +'    <value name="INPUT1">'
+    +'      <block type="system_code">'
+    +'        <field name="CODE0">js-code</field>'
+    +'      </block>'
+    +'    </value>'
+    +'  </block>'
 
-Blockly.Blocks['system_code'] = {
+Blockly.Blocks['system_input_code'] = {
   init: function() {
-    var InputPrefix = new Blockly.FieldTextInput('');
-    InputPrefix.setSpellcheck(false);
-    var InputSuffix = new Blockly.FieldTextInput('');
-    InputSuffix.setSpellcheck(false);
+    let code0 = new Blockly.FieldTextInput('');
+    code0.setSpellcheck(false);
 
-    this.appendValueInput('INPUT')
-        //.appendField('js')
-        .appendField(InputPrefix, 'PREFIX');
-    this.appendDummyInput()
-        .appendField(InputSuffix, 'SUFFIX');
+    this.appendValueInput('INPUT0')
+        .appendField(code0, 'CODE0');
+    this.appendValueInput('INPUT1');
 
     this.setOutput(true, null);
     this.setInputsInline(true);
@@ -31,32 +33,54 @@ Blockly.Blocks['system_code'] = {
   }
 }
 
-Blockly.JavaScript['system_code'] = function(block) {
-  var input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_NONE);
-  var prefix = block.getFieldValue('PREFIX');
-  var suffix = block.getFieldValue('SUFFIX');
+Blockly.JavaScript['system_input_code'] = function(block) {
+  let input0 = Blockly.JavaScript.valueToCode(block, 'INPUT0', Blockly.JavaScript.ORDER_NONE) || '';
+  let input1 = Blockly.JavaScript.valueToCode(block, 'INPUT1', Blockly.JavaScript.ORDER_NONE) || '';
+  let code0 = block.getFieldValue('CODE0') || '';
+  let code = code0 + input0 + input1;
 
-  return [prefix + input + suffix, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  let hasOutput = block.outputConnection && block.outputConnection.type == 2;
+  return hasOutput ? [code, Blockly.JavaScript.ORDER_ATOMIC] : code
 }
 
-// --- system_code2 --------------------------------------------------
-Blockly.Custom.blocks['system_code2'] =
-    '  <block type="system_code2">'
+// --- system_code --------------------------------------------------
+Blockly.Custom.blocks['system_code'] =
+    '  <block type="system_code">'
+    +'    <field name="CODE0">js-code</field>'
     +'  </block>';
 
-Blockly.Blocks['system_code2'] = {
+Blockly.Blocks['system_code'] = {
   init: function() {
-    var InputPrefix = new Blockly.FieldTextInput('');
-    InputPrefix.setSpellcheck(false);
-    var InputSuffix = new Blockly.FieldTextInput('');
-    InputSuffix.setSpellcheck(false);
+    let code0 = new Blockly.FieldTextInput('');
+    code0.setSpellcheck(false);
 
-    this.appendValueInput('INPUT')
-        //.appendField('js')
-        .appendField(InputPrefix, 'PREFIX');
     this.appendDummyInput()
-        .appendField(InputSuffix, 'SUFFIX');
+        .appendField(code0, 'CODE0');
 
+    this.setOutput(true, null);
+    this.setInputsInline(true);
+    this.setColour('#FF0000');
+    this.setTooltip('');
+    this.setHelpUrl('');
+    this.initSvg();
+  }
+}
+
+Blockly.JavaScript['system_code'] = Blockly.JavaScript['system_input_code'];
+
+// --- system_connector --------------------------------------------------
+Blockly.Custom.blocks['system_connector'] =
+    '  <block type="system_connector">'
+    +'    <value name="INPUT0">'
+    +'      <block type="system_code">'
+    +'        <field name="CODE0">js-code</field>'
+    +'      </block>'
+    +'    </value>'
+    +'  </block>'
+
+Blockly.Blocks['system_connector'] = {
+  init: function() {
+    this.appendValueInput('INPUT0');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setInputsInline(true);
@@ -67,14 +91,7 @@ Blockly.Blocks['system_code2'] = {
   }
 }
 
-Blockly.JavaScript['system_code2'] = function(block) {
-  var input = Blockly.JavaScript.valueToCode(block, 'INPUT', Blockly.JavaScript.ORDER_NONE);
-  var prefix = block.getFieldValue('PREFIX');
-  var suffix = block.getFieldValue('SUFFIX');
-
-  return prefix + input + suffix
-}
-
+Blockly.JavaScript['system_connector'] = Blockly.JavaScript['system_input_code'];
 
 /** ///###########################    system_getObjProperties    ###########################//
 BOB_.registerBlock('system_getObjProperties');
