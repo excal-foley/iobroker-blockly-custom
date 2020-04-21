@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+     html, body { height: 100%; }
+     body {
+       margin: 0;
+       display: flex;
+       justify-content: center;/*horizontally*/
+     /*align-items: center;/*vertically*/ }
+    </style>
+  </head>
+  <body>
+    <div style="font-family: monospace, Arial"><br>
+      <b>Zahl auf Vielfaches Runden!</b><br><br>
+        Nummer: <input type="number" id="num" value="7.43258"><br>
+        Faktor: <input type="number" id="fact" value="0.02"><br>
+      Ergebnis: <span id="resulut"></span><br>
+    </div>
+    <script>
+      'use strict';
+
+      /**
+       * Round a number to multiple
+       * @param  {number}  number             The number to round
+       * @param  {number}  multiple           The mutible to round
+       * @param  {number}  [direction=0]       0 = Round next Number
+       *                                       1 = Round up
+       *                                      -1 = Round down
+       * @param  {boolean} [ignoreSign=false] true = ignore sign at Round up&down
+       * @return {number}
+       */
+      function RoundMutlible ( number, multiple, direction = 0, ignoreSign = false ) {
+          if (ignoreSign && number < 0) direction = -direction;
+
+          // convert multiple in fraction to avoid IEEE754 calculation error
+          let numerator = 1 / (multiple % 1 || 1);
+          let denominator = multiple * numerator;
+
+          number = number * numerator / denominator;
+          number = direction < 0 ? Math.floor(number) * denominator / numerator :
+                   direction > 0 ? Math.ceil(number) * denominator / numerator :
+                                   Math.round(number) * denominator / numerator;
+          return +number.toFixed(14);
+      }
+
+      let num, fact;
+
+      let inNum = document.getElementById('num');
+      let inFact = document.getElementById('fact');
+      let outResulut = document.getElementById('resulut');
+
+      inNum.addEventListener("change", () => varUpdate());
+      inFact.addEventListener("change", () => varUpdate());
+
+      function varUpdate() {
+        num = inNum.value;
+        fact = inFact.value;
+        outResulut.innerHTML = RoundMutlible(num, fact);
+      }
+
+      varUpdate()
+
+    </script>
+  </body>
+</html>
